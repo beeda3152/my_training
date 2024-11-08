@@ -13,9 +13,6 @@ class Bank(threading.Thread):
             dohod = random.randint(50,500)
             self.balance += dohod
             print(f"Пополнение: {dohod}. Баланс: {self.balance}")
-            if self.balance < 500 and not(self.lock.locked()):
-                self.lock.acquire()
-                print(self.lock.locked())
             if self.balance >= 500 and self.lock.locked():
                 self.lock.release()
             sleep(0.001)
