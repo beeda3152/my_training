@@ -18,7 +18,6 @@ class Bank(threading.Thread):
                 print(self.lock.locked())
             if self.balance >= 500 and self.lock.locked():
                 self.lock.release()
-                print(self.lock.locked())
             sleep(0.001)
 
     def take(self):
