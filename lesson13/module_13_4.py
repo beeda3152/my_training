@@ -15,7 +15,6 @@ class UserState(StatesGroup):
     age = State()
     growth = State()
     weight = State()
-    gender = State()
 
 @dp.message_handler(text=['Calories'])
 async def set_age(message):
@@ -23,14 +22,8 @@ async def set_age(message):
     await UserState.age.set()
 
 @dp.message_handler(state=UserState.age)
-async def set_gender(message, state):
-    await state.update_data(age = int(message.text))
-    await message.answer('Введите свой пол: М или W')
-    await UserState.gender.set()
-
-@dp.message_handler(state=UserState.gender)
 async def set_growth(message, state):
-    await state.update_data(gender = message.text)
+    await state.update_data(age = int(message.text))
     await message.answer('Введите свой рост: ')
     await UserState.growth.set()
 
@@ -44,11 +37,8 @@ async def set_weight(message, state):
 async def send_calories(message, state):
     await state.update_data(weight = int(message.text))
     data = await state.get_data()
-    if data['gender'] == 'M':
-        calories = data['weight'] * 10 + data['growth'] * 6.25 - 5 * data['age'] + 5
-    else:
-        calories = data['weight'] * 10 + data['growth'] * 6.25 - 5 * data['age'] - 161
-    await message.answer(f'Ваша дневная норма составляет {calories} ккал')
+    calories = data['weight'] * 10 + data['growth'] * 6.25 - 5 * data['age'] + 5
+    await message.answer(f'Ваша норма калорий {calories}')
     await state.finish()
 
 @dp.message_handler()
@@ -58,5 +48,3 @@ async def all_messages(message):
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
 
-    """для мужчин: 10 х вес (кг) + 6,25 x рост (см) – 5 х возраст (г) + 5;
-для женщин: 10 x вес (кг) + 6,25 x рост (см) – 5 x возраст (г) – 161."""
