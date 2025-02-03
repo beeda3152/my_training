@@ -64,7 +64,7 @@ async def update_user(db: Annotated[Session, Depends(get_db)], user_id: int, upd
 
     return {
         'status_code': status.HTTP_200_OK,
-        'transaction': 'Category delete is successful'
+        'transaction': 'User update is successful!'
     }
 
 @router.delete('/delete')
@@ -79,5 +79,5 @@ async def delete_user(db: Annotated[Session, Depends(get_db)], user_id: int):
     db.commit()
     return {
         'status_code': status.HTTP_200_OK,
-        'transaction': 'Product delete is successful'
+        'transaction': 'User delete is successful'
     }
